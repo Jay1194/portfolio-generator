@@ -151,9 +151,6 @@ const promptUser = () => {
   });
 }
 
-
-
-
    //Using Promises, we can chain the functions together using the then() method
    promptUser()
    .then(promptProject)
