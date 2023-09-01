@@ -10,12 +10,31 @@ const promptUser = () => {
       //properties of the question object
        type: 'input',
        name: 'name',
-       message: 'What is your name?'
+       message: 'What is your name?',
+       // from the docs  we can deduce that this method is a function that returns a Boolean value
+       validate: nameInput => {
+        //If the condition evaluates to true, the validation has passed successfully
+        if (nameInput) {
+          return true;
+          //if the condition evaluates to false, the user receives a message and is prompted with the same question until an answer is received
+        } else {
+          console.log('Please enter your name!');
+          return false;
+        }
+       }
      },
      {
        type: 'input',
        name: 'github',
-       message: 'Enter your Github Username:'
+       message: 'Enter your Github Username:',
+       validate: githubUsername => {
+        if (githubUsername) {
+          return true;
+        } else {
+          console.log('Please enter your github username!');
+          return false;
+        }
+       }
      },
      {
       type: 'input',
@@ -43,12 +62,28 @@ const promptUser = () => {
         {  // text answer
           type: 'input',
           name: 'name',
-          message: 'What is the name of your project?'
+          message: 'What is the name of your project?',
+          validate: projectName => {
+            if (projectName) {
+              return true;
+            } else {
+              console.log('Please enter your project name!');
+              return false;
+            }
+          }
         },
         {
           type: 'input',
           name: 'description',
-          message: 'Provide a description of the project (Required)'
+          message: 'Provide a description of the project (Required)',
+          validate: projectDescription => {
+            if (projectDescription) {
+              return true;
+            } else {
+              console.log('Please enter your project description!');
+              return false;
+            }
+          }
         },
         { // checkbox answer
           type: 'checkbox',
@@ -59,7 +94,15 @@ const promptUser = () => {
         {
           type: 'input',
           name: 'link',
-          message: 'Enter the Github link in your project. (Required)'
+          message: 'Enter the Github link in your project. (Required)',
+          validate: projectGithubLink => {
+            if (projectGithubLink) {
+              return true;
+            }else {
+              console.log('Please enter your projects Github Link!');
+              return false;
+            }
+          }
         },
         { // boolean answer
           type: 'confirm',
