@@ -1,137 +1,141 @@
 const inquirer = require('inquirer');
 
+// access fs module
+const fs = require('fs');
+
+// object in the module.exports assignment will be reassigned to the generatePage variable
+const generatePage = require('./src/page-template.js');
+
 //add a parameter that will store the project data
 const promptUser = () => {
   
-  
-
   return inquirer.prompt([
-     {
-      //properties of the question object
-       type: 'input',
-       name: 'name',
-       message: 'What is your name?',
-       // from the docs  we can deduce that this method is a function that returns a Boolean value
-       validate: nameInput => {
-        //If the condition evaluates to true, the validation has passed successfully
-        if (nameInput) {
-          return true;
-          //if the condition evaluates to false, the user receives a message and is prompted with the same question until an answer is received
-        } else {
-          console.log('Please enter your name!');
-          return false;
-        }
-       }
-     },
-     {
-       type: 'input',
-       name: 'github',
-       message: 'Enter your Github Username:',
-       validate: githubUsername => {
-        if (githubUsername) {
-          return true;
-        } else {
-          console.log('Please enter your github username!');
-          return false;
-        }
-       }
-     },
-     {
-      //ask the user if they'd like to add an About section (only after they confirm yes)
-      type: 'confirm',
-      name: 'confirmAbout',
-      message: 'Would you like to enter some information about yourself for an "About" section?',
-      default: true
-     },
-     {
+    {
+     //properties of the question object
       type: 'input',
-      name: 'about',
-      message: 'Provide some information about yourself:',
-      //method allows you to make conditional questions
-      when: ({ confirmAbout }) => {
-        if (confirmAbout) {
-          return true;
-        } else {
-          return false;
-        }
+      name: 'name',
+      message: 'What is your name?',
+      // from the docs  we can deduce that this method is a function that returns a Boolean value
+      validate: nameInput => {
+       //If the condition evaluates to true, the validation has passed successfully
+       if (nameInput) {
+         return true;
+         //if the condition evaluates to false, the user receives a message and is prompted with the same question until an answer is received
+       } else {
+         console.log('Please enter your name!');
+         return false;
+       }
       }
+    },
+    {
+      type: 'input',
+      name: 'github',
+      message: 'Enter your Github Username:',
+      validate: githubUsername => {
+       if (githubUsername) {
+         return true;
+       } else {
+         console.log('Please enter your github username!');
+         return false;
+       }
+      }
+    },
+    {
+     //ask the user if they'd like to add an About section (only after they confirm yes)
+     type: 'confirm',
+     name: 'confirmAbout',
+     message: 'Would you like to enter some information about yourself for an "About" section?',
+     default: true
+    },
+    {
+     type: 'input',
+     name: 'about',
+     message: 'Provide some information about yourself:',
+     //method allows you to make conditional questions
+     when: ({ confirmAbout }) => {
+       if (confirmAbout) {
+         return true;
+       } else {
+         return false;
+       }
      }
-   ]);
-  };
+    }
+  ]);
+ };
 
+  
+  // add a parameter that will store the project data
+  const promptProject = portfolioData => {
    
-   // add a parameter that will store the project data
-   const promptProject = portfolioData => {
-    
-   // If there's no 'projects' array property, create one
-   if (!portfolioData.projects) {
-   portfolioData.projects = [];
+  // If there's no 'projects' array property, create one
+  if (!portfolioData.projects) {
+  portfolioData.projects = [];
 
-  }
-    console.log(`
-    =================
-    Add a New Project
-    =================
-    `);
-      return inquirer.prompt([
-        {  // text answer
-          type: 'input',
-          name: 'name',
-          message: 'What is the name of your project?',
-          validate: projectName => {
-            if (projectName) {
-              return true;
-            } else {
-              console.log('Please enter your project name!');
-              return false;
-            }
-          }
-        },
-        {
-          type: 'input',
-          name: 'description',
-          message: 'Provide a description of the project (Required)',
-          validate: projectDescription => {
-            if (projectDescription) {
-              return true;
-            } else {
-              console.log('Please enter your project description!');
-              return false;
-            }
-          }
-        },
-        { // checkbox answer
-          type: 'checkbox',
-          name: 'languages',
-          message: 'What did you build this project with? (check all that apply)',
-          choices: ['JavaScript', 'HTML', 'CSS', 'ES6', 'jQuery', 'BootStrap', 'Node']
-        },
-        {
-          type: 'input',
-          name: 'link',
-          message: 'Enter the Github link in your project. (Required)',
-          validate: projectGithubLink => {
-            if (projectGithubLink) {
-              return true;
-            }else {
-              console.log('Please enter your projects Github Link!');
-              return false;
-            }
-          }
-        },
-        { // boolean answer
-          type: 'confirm',
-          name: 'feature',
-          message: 'Would you like to feature this project?',
-          default: false
-        },
-        {
-          type: 'confirm',
-          name: 'confirmAddProject',
-          message: 'Would you like to enter anouther project?',
-          default: false
-        }
-      ])
+ }
+   console.log(`
+   =================
+   Add a New Project
+   =================
+   `);
+     return inquirer.prompt([
+       {  // text answer
+         type: 'input',
+         name: 'name',
+         message: 'What is the name of your project?',
+         validate: projectName => {
+           if (projectName) {
+             return true;
+           } else {
+             console.log('Please enter your project name!');
+             return false;
+           }
+         }
+       },
+       {
+         type: 'input',
+         name: 'description',
+         message: 'Provide a description of the project (Required)',
+         validate: projectDescription => {
+           if (projectDescription) {
+             return true;
+           } else {
+             console.log('Please enter your project description!');
+             return false;
+           }
+         }
+       },
+       { // checkbox answer
+         type: 'checkbox',
+         name: 'languages',
+         message: 'What did you build this project with? (check all that apply)',
+         choices: ['JavaScript', 'HTML', 'CSS', 'ES6', 'jQuery', 'BootStrap', 'Node']
+       },
+       {
+         type: 'input',
+         name: 'link',
+         message: 'Enter the Github link in your project. (Required)',
+         validate: projectGithubLink => {
+           if (projectGithubLink) {
+             return true;
+           }else {
+             console.log('Please enter your projects Github Link!');
+             return false;
+           }
+         }
+       },
+       { // boolean answer
+         type: 'confirm',
+         name: 'feature',
+         message: 'Would you like to feature this project?',
+         default: false
+       },
+       {
+         type: 'confirm',
+         name: 'confirmAddProject',
+         message: 'Would you like to enter anouther project?',
+         default: false
+       }
+     ])
         //add the project data to the projects array
        .then(projectData => {
         //we use the array method push() to place the projectData from inquirer into the new projects array we just created.
@@ -146,24 +150,31 @@ const promptUser = () => {
         }
   });
 }
+
+
+
+
    //Using Promises, we can chain the functions together using the then() method
    promptUser()
    .then(promptProject)
    .then(portfolioData => {
-    console.log(portfolioData);
+    // invokes the generatePage() with portfolioData and uses the result from our inquirer prompts as an argument called portfolioData.
+      const pageHTML = generatePage(portfolioData);
+
+     fs.writeFile('./index.html', pageHTML, err => {
+       if (err) throw new Error(err);
+
+       console.log('Page created! Check out index.html in this directory to see it!');
+     });
    });
    
  
    
 
+
+
+
 /*
-// access fs module
-const fs = require('fs');
-
-// object in the module.exports assignment will be reassigned to the generatePage variable
-const generatePage = require('./src/page-template.js');
-
-
 
 // extract arguments and store them into distinct variables using the array index (destructuring assignment)
 const pageHTML = generatePage(name, github);
