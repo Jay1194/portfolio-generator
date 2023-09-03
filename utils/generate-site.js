@@ -24,13 +24,11 @@ const writeFile = fileContent => {
 // copying file
 const copyFile = () => {
     return new Promise((resolve, reject) => {
-        fs.copyFile('./src/style.css', err => {
-
+        fs.copyFile('./dist/style.css', err => {
             if (err) {
                 reject(err);
                 return;
             }
-
             resolve({
                 ok: true,
                 message: 'Stylesheet copied'
