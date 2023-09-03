@@ -1,10 +1,10 @@
 const inquirer = require('inquirer');
 
-// access fs module
-const fs = require('fs');
-
 // object in the module.exports assignment will be reassigned to the generatePage variable
-const generatePage = require('./src/page-template.js');
+const generatePage = require('./src/page-template');
+
+// will import the exported object from generate-site.js, allowing us to use generateSite.writeFile() and generateSite.copyFile().
+const { writeFile, copyFile } = require('./utils/generate-site');
 
 //add a parameter that will store the project data
 const promptUser = () => {
@@ -151,40 +151,27 @@ const promptUser = () => {
   });
 }
 
-   //Using Promises, we can chain the functions together using the then() method
+   //Using Promises, we can chain the functions together using the then() method (promise chain!)
    promptUser()
    .then(promptProject)
    .then(portfolioData => {
-    // invokes the generatePage() with portfolioData and uses the result from our inquirer prompts as an argument called portfolioData.
-      const pageHTML = generatePage(portfolioData);
-
-     fs.writeFile('./index.html', pageHTML, err => {
-       if (err) throw new Error(err);
-
-       console.log('Page created! Check out index.html in this directory to see it!');
-     });
-   });
-   
- 
-   
-
-
-
-
-/*
-
-// extract arguments and store them into distinct variables using the array index (destructuring assignment)
-const pageHTML = generatePage(name, github);
-
- //The first argument is the file name that will be created, or the output file. The second argument is the data that's being written: the HTML string template. 
-fs.writeFile('index.html', generatePage(name, github), err => {
-
-  // The third argument is the callback function that will handle any errors as well as the success message.
-  if (err) throw err;
+    return generatePage(portfolioData);
+   })
+   .then(pageHTML => {
+    return writeFile(pageHTML);
+   })
+    .then(writeFileResponse => {
+      console.log(writeFileResponse);
+      return copyFile();
+    })
+    .then(copyFileResponse => {
+      console.log(copyFileResponse);
+    })
+    //only need to write one .catch() method to handle any error that may occur with any of the Promise-based functions
+    .catch(err => {
+      console.log(err);
+    });
 
 
-  console.log('Portfolio complete! check out index.html to see the output!');
-});
-*/
 
 
