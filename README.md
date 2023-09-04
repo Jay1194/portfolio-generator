@@ -1,4 +1,4 @@
-# portfolio-generator
+# Portfolio-Generator
 
 ## Description
 - You can quickly and easily generate a page to display your portfolios by using a command-line application to generate the page.
